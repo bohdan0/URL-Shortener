@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+user1 = User.create!(email: "email@awesome.com")
+
+shortened_url1 = ShortenedUrl.create!(user_id: 1,
+  short_url: "http://short.com", long_url: "http://really-long-url.com")
