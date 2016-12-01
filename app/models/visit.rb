@@ -1,5 +1,6 @@
 class Visit < ActiveRecord::Base
   validates :user_id, :shortened_url_id, presence: true
+  validate :creation_limit
 
   belongs_to :visitor,
     primary_key: :id,
@@ -13,5 +14,11 @@ class Visit < ActiveRecord::Base
 
   def self.record_visit!(user, shortened_url)
     Visit.create!(user_id: user.id, shortened_url_id: shortened_url.id)
+  end
+
+  def creation_limit
+    if ShortenedUrl.find(shortened_url_id).num_recent_user_clicks(1) >= 5
+      errors.add(:robot, 'detected')
+    end
   end
 end
