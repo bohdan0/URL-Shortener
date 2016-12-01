@@ -38,6 +38,10 @@ class ShortenedUrl < ActiveRecord::Base
     ShortenedUrl.create!(user_id: user.id, long_url: long_url, short_url: self.random_code)
   end
 
+  def self.prune(n)
+    ShortenedUrl.where("created_at < ?", n.minutes.ago).destroy_all
+  end
+
   def length
     if long_url.length >= 1024
       errors.add(:length, 'too long')

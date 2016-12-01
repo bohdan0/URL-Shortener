@@ -17,8 +17,8 @@ class Visit < ActiveRecord::Base
   end
 
   def creation_limit
-    if ShortenedUrl.find(shortened_url_id).num_recent_user_clicks(1) >= 5
-      errors.add(:robot, 'detected')
+    unless User.find(user_id).premium
+      errors.add(:robot, 'detected') if ShortenedUrl.find(shortened_url_id).num_recent_user_clicks(1) >= 5
     end
   end
 end
